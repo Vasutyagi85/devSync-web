@@ -3,7 +3,7 @@ import { BrowserRouter,Routes,Route } from 'react-router-dom'
 import NavBar from "./components/NavBar"
 import Login from './components/Login'
 import Profile from './components/Profile'
-import Body from '../body'
+import Body from './components/Body'
 import Feed from './components/Feed'
 import { Provider } from 'react-redux'
 import appStore from './utils/appStore'

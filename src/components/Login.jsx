@@ -10,7 +10,8 @@ const Login = () => {
   const [emailId,setEmailId]=useState("Akshat@gmail.com");
   const [password,setPassword]=useState("Akshat@85699");
   const dispatch=useDispatch();
-  const navigate=useNavigate();//never call a hook inside a function
+  const navigate=useNavigate();//never call a hook inside a function in which we have to use that hook
+  const[error,setError]=useState();
   
 
   const handleLogin =async ()=>{
@@ -19,14 +20,19 @@ const Login = () => {
       const res=await axios.post(BASE_URL + "/login",{
       emailId,
       password
-    })
-    dispatch(addUser(res.data)); 
-    navigate("/feed")
-    
+    },{
+      withCredentials:true
+    });
+    if (res.data && res.data._id) {
+      dispatch(addUser(res.data));
+      navigate("/feed");
+    } else {
+      setError("Invalid credentials");
+    }
     // dispatch(addUser(res.data));//calling addaction by dispatch hook
   }
     catch(err){
-      console.log(err);
+      setError(err?.response?.data || "Something went wrong");
     }
   };
 
@@ -46,6 +52,7 @@ const Login = () => {
 
         </fieldset>
       </div>
+      <p className='text-red-500'>{error}</p>
       <div className="card-actions justify-center">
       <button className="btn btn-primary px-4" onClick={handleLogin}>Login</button>
       </div>
